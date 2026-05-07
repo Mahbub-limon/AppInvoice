@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppInvoice.MainPage"
+             Title="Invoice">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+
+            <Entry x:Name="invoiceNumberEntry" Placeholder="Enter Invoice Number" />
+
+            <Entry x:Name="customerNameEntry" Placeholder="Enter Customer Name" />
+
+            <Border StrokeShape="RoundRectangle 6"
+                    
+                    StrokeThickness ="1"
+                    
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF ,Dark=#222222}"
+                    Padding="10" Margin="0,8">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Add item" FontAttributes="Bold" />
+
+                    <Grid>
+                        
+                    </Grid>
+                </VerticalStackLayout>
+                
+                    
+
+                
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
