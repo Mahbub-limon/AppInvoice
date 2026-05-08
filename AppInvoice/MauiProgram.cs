@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AppInvoice.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace AppInvoice
 {
+    //configure this appp
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
@@ -18,6 +20,8 @@ namespace AppInvoice
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            // Register ViewModels
+            builder.Services.AddSingleton<InvoiceViewModel>();
 
             return builder.Build();
         }

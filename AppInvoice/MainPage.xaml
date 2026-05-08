@@ -1,38 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:AppInvoice.ViewModels"
              x:Class="AppInvoice.MainPage"
-             Title="Invoice">
+             Title="Invoice"
+             Padding="10">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+    <ContentPage.BindingContext>
+        <viewmodels:InvoiceViewModel />
+    </ContentPage.BindingContext>
 
-            <Entry x:Name="invoiceNumberEntry" Placeholder="Enter Invoice Number" />
+    <VerticalStackLayout Spacing="8">
 
-            <Entry x:Name="customerNameEntry" Placeholder="Enter Customer Name" />
+        <Entry Text="{Binding InvoiceNumber}" Placeholder="Invoice Number"/>
+        <Entry Text="{Binding CustomerName}" Placeholder="Customer Name"/>
 
-            <Border StrokeShape="RoundRectangle 6"
-                    
-                    StrokeThickness ="1"
-                    
-                    BackgroundColor="{AppThemeBinding Light=#FFFFFF ,Dark=#222222}"
-                    Padding="10" Margin="0,8">
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="Add item" FontAttributes="Bold" />
+        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5">
+            <Entry Text="{Binding NewItemName}" Placeholder="Item"/>
+            <Entry Grid.Column="1" Text="{Binding NewItemPrice}" Keyboard="Numeric" Placeholder="Price" WidthRequest="70"/>
+            <Entry Grid.Column="2" Text="{Binding NewItemQty}" Keyboard="Numeric" Placeholder="Qty" WidthRequest="50"/>
+            <Button Grid.Column="3" Text="+" Command="{Binding AddItemCommand}" BackgroundColor="#4CAF50" WidthRequest="40"/>
+        </Grid>
 
-                    <Grid>
-                        
-                    </Grid>
-                </VerticalStackLayout>
-                
-                    
+        <CollectionView ItemsSource="{Binding Items}" HeightRequest="220">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" BackgroundColor="Red" 
+                                          Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:InvoiceViewModel}}, Path=RemoveItemCommand}"
+                                          CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid ColumnDefinitions="*,2*,Auto,Auto" Padding="5">
+                            <Label Text="{Binding ItemName}"/>
+                            <Label Grid.Column="1" Text="{Binding Price, StringFormat='{0:C}'}"/>
+                            <Label Grid.Column="2" Text="{Binding Qty}"/>
+                            <Label Grid.Column="3" Text="{Binding Total, StringFormat='{0:C}'}" TextColor="Green"/>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                
-            </Border>
+        <Border StrokeThickness="1" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Subtotal:"/>
+                <Label Grid.Column="2" Text="{Binding SubTotal, StringFormat='{0:C}'}"/>
 
+                <Label Grid.Row="1" Text="Tax:"/>
+                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Tax}" Keyboard="Numeric" WidthRequest="60"/>
+                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Tax, StringFormat='{0}%'}"/>
+
+                <Label Grid.Row="2" Text="Grand Total:" FontAttributes="Bold"/>
+                <Label Grid.Row="2" Grid.Column="2" Text="{Binding GrandTotal, StringFormat='{0:C}'}" FontAttributes="Bold" TextColor="Green"/>
+            </Grid>
+        </Border>
+
+        <Button Text="💾 Save" Command="{Binding SaveInvoiceCommand}" BackgroundColor="#2196F3"/>
+        <Button Text="🗑️ Clear" Command="{Binding ClearCommand}" BackgroundColor="#F44336"/>
+
+    </VerticalStackLayout>
 </ContentPage>
